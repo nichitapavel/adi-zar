@@ -74,30 +74,25 @@ class TestSelenium:
         assert comment_found is not None
         assert comment == comment_found.find_element_by_class_name(COMMENT_BODY_ID).text
 
-    def test_of_the_gods(self):
-        # Enter a comment with a wrong email & Check Error is displayed
-        # given
-        self.navigate_to_page(SAMPLE_PAGE)
-
+    def test_of_the_gods(self, request):
         # when
         self.sample_page.write_comment(self.generate_string(100), NAME, WRONG_EMAIL)
 
         # then
-        self.driver.save_screenshot(f'{DIR}/32-GOD-KO-error-page.png')
-        assert self.driver.title == 'Comment Submission Failure'
+        error = self.driver.find_element_by_id(ERROR_MESSAGE_ID)
+        assert ERROR_MESSAGE in error.text
 
-        # Navigate back
+        # Navigate to Sample Page
         self.driver.back()
 
-        # Enter a comment with a correct email & Check Comment is Received
-        # given
+        # Chrome keeps values previously typed
         self.sample_page.clear_fields()
         comment = self.generate_string(100)
         self.sample_page.write_comment(comment, NAME, CORRECT_EMAIL)
 
-        # then
-        self.driver.save_screenshot(f'{DIR}/34-GOD-OK-comment-post.png')
-        new_comment_id = self.driver.current_url.split('#')[-1]
-        comment_found = self.driver.find_element_by_id(new_comment_id)
+        # TODO self.driver.current_url works, but is a bit out of context, maybe it should be returned by .write_comment
+        comment_found = self.sample_page.get_comment(self.driver.current_url)
+        self.driver.save_screenshot(f'{DIR}/{request.node.name}.png')
+
         assert comment_found is not None
         assert comment_found.find_element_by_class_name(COMMENT_BODY_ID).text == comment
