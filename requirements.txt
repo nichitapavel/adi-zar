@@ -1,3 +1,5 @@
 selenium==3.13.0
 pytest==3.6.2
 text-generator==0.1.0
+requests==2.19.1
+xmltodict==0.11.0
