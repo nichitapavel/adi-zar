@@ -5,6 +5,7 @@ FORM_COMMENT_ID = 'comment'
 FORM_NAME_ID = 'author'
 FORM_EMAIL_ID = 'email'
 FORM_ID = 'commentform'
+FORM_SUBMIT_BUTTON_ID = 'submit'
 
 
 class SamplePage:
@@ -25,7 +26,9 @@ class SamplePage:
         comment_form.find_element_by_id(FORM_COMMENT_ID).send_keys(comment)
         comment_form.find_element_by_id(FORM_NAME_ID).send_keys(name)
         comment_form.find_element_by_id(FORM_EMAIL_ID).send_keys(email)
-        comment_form.submit()
+        # You cannot submit in Firefox, just click on it.
+        # comment_form.submit()
+        comment_form.find_element_by_id(FORM_SUBMIT_BUTTON_ID).click()
 
     def get_comment(self, comment_url):
         """

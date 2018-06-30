@@ -39,13 +39,14 @@ class TestSelenium:
 
     def setup_method(self):
         self.driver = WebDriver(command_executor='http://192.168.0.165:4444/wd/hub',
-                                desired_capabilities=DesiredCapabilities.CHROME.copy())
+                                desired_capabilities=DesiredCapabilities.FIREFOX.copy())
         self.driver.get('http://store.demoqa.com')
         self.navigate_to_page(SAMPLE_PAGE)
         self.sample_page = SamplePage(self.driver)
 
     def teardown_method(self):
-        self.driver.close()
+        # You cannot close Firefox and quit it after, or close or quit, not both.
+        # self.driver.close()
         self.driver.quit()
         self.driver = None
         self.sample_page = None
