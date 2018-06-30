@@ -39,7 +39,7 @@ class TestSelenium:
 
     def setup_method(self):
         self.driver = WebDriver(command_executor='http://192.168.0.165:4444/wd/hub',
-                                desired_capabilities=DesiredCapabilities.FIREFOX.copy())
+                                desired_capabilities=DesiredCapabilities.CHROME.copy())
         self.driver.get('http://store.demoqa.com')
         self.navigate_to_page(SAMPLE_PAGE)
         self.sample_page = SamplePage(self.driver)
