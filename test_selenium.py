@@ -22,12 +22,12 @@ class TestSelenium:
 
     driver = None
 
-    def setup(self):
+    def setup_method(self):
         self.driver = WebDriver(command_executor='http://192.168.0.165:4444/wd/hub',
                                 desired_capabilities=DesiredCapabilities.CHROME.copy())
         self.driver.get('http://store.demoqa.com')
 
-    def teardown(self):
+    def teardown_method(self):
         self.driver.quit()
         self.driver = None
 
