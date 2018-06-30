@@ -5,9 +5,13 @@ from sample_page import SamplePage
 
 # HTML ID's
 COMMENT_BODY_ID = 'comment-body'
+ERROR_MESSAGE_ID = 'error-page'
 
 # HTML Text Link
 SAMPLE_PAGE = 'Sample Page'
+
+# HTML messages
+ERROR_MESSAGE = 'ERROR: please enter a valid email address.'
 
 # HMTL Form data
 NAME = 'Pavel'
@@ -47,16 +51,15 @@ class TestSelenium:
         text.generate_dictionary(size)
         return ' '.join(map(str, text.get_dictionary()))
 
-    def test_wrong_email_redirects_error_page(self):
-        # given
-        self.navigate_to_page(SAMPLE_PAGE)
-
+    def test_wrong_email_redirects_error_page(self, request):
         # when
         comment = self.generate_string(100)
         self.sample_page.write_comment(comment, NAME, WRONG_EMAIL)
+        self.driver.save_screenshot(f'{DIR}/{request.node.name}.png')
 
         # then
-        assert self.driver.title == 'Comment Submission Failure'
+        error = self.driver.find_element_by_id(ERROR_MESSAGE_ID)
+        assert ERROR_MESSAGE in error.text
 
     def test_correct_email_adds_comment(self):
         # given
