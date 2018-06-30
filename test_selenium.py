@@ -2,6 +2,7 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.remote.webdriver import WebDriver
 from text_generator.text_generator import TextGenerator
 from sample_page import SamplePage
+import os, shutil
 
 
 # HTML ID's
@@ -20,13 +21,19 @@ WRONG_EMAIL = 'awesome at ten dot net'
 CORRECT_EMAIL = 'awesome@ten.net'
 
 # Root directory to save data in case of screenshots
-DIR = 'photos'
+DIR = 'screenshots'
 
 
 class TestSelenium:
 
     driver = None
     sample_page = None
+
+    @classmethod
+    def setup_class(cls):
+        if os.path.exists(DIR):
+            shutil.rmtree(DIR)
+        os.mkdir(DIR)
 
     def setup_method(self):
         self.driver = WebDriver(command_executor='http://192.168.0.165:4444/wd/hub',
