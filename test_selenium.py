@@ -1,9 +1,11 @@
+import os
+import shutil
+
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.remote.webdriver import WebDriver
 from text_generator.text_generator import TextGenerator
-from sample_page import SamplePage
-import os, shutil
 
+from sample_page import SamplePage
 
 # HTML ID's
 COMMENT_BODY_ID = 'comment-body'
