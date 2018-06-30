@@ -2,19 +2,18 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.remote.webdriver import WebDriver
 from text_generator.text_generator import TextGenerator
 
-FORM_COMMENT_ID = 'comment'
-FORM_NAME_ID = 'author'
-FORM_EMAIL_ID = 'email'
-FORM_ID = 'commentform'
+# HTML ID's
+COMMENT_BODY_ID = 'comment-body'
 
-COMMENT_BODY = 'comment-body'
+# HTML Text Link
+SAMPLE_PAGE = 'Sample Page'
 
-LINK_SAMPLE_PAGE = 'Sample Page'
-
-USERNAME = 'Pavel'
+# HMTL Form data
+NAME = 'Pavel'
 WRONG_EMAIL = 'awesome at ten dot net'
 CORRECT_EMAIL = 'awesome@ten.net'
 
+# Root directory to save data in case of screenshots
 DIR = 'photos'
 
 
@@ -77,7 +76,7 @@ class TestSelenium:
         new_comment_id = self.driver.current_url.split('#')[-1]
         comment_found = self.driver.find_element_by_id(new_comment_id)
         assert comment_found is not None
-        assert comment_found.find_element_by_class_name(COMMENT_BODY).text == comment
+        assert comment_found.find_element_by_class_name(COMMENT_BODY_ID).text == comment
 
     def test_of_the_gods(self):
         # Enter a comment with a wrong email & Check Error is displayed
@@ -117,4 +116,4 @@ class TestSelenium:
         new_comment_id = self.driver.current_url.split('#')[-1]
         comment_found = self.driver.find_element_by_id(new_comment_id)
         assert comment_found is not None
-        assert comment_found.find_element_by_class_name(COMMENT_BODY).text == comment
+        assert comment_found.find_element_by_class_name(COMMENT_BODY_ID).text == comment
