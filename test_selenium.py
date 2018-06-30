@@ -61,20 +61,18 @@ class TestSelenium:
         error = self.driver.find_element_by_id(ERROR_MESSAGE_ID)
         assert ERROR_MESSAGE in error.text
 
-    def test_correct_email_adds_comment(self):
-        # given
-        self.navigate_to_page(SAMPLE_PAGE)
-
+    def test_correct_email_adds_comment(self, request):
         # when
         comment = self.generate_string(100)
         self.sample_page.write_comment(comment, NAME, CORRECT_EMAIL)
 
         # then
-        # return url: http://store.demoqa.com/sample-page/#comment-620
-        new_comment_id = self.driver.current_url.split('#')[-1]
-        comment_found = self.driver.find_element_by_id(new_comment_id)
+        # TODO self.driver.current_url works, but is a bit out of context, maybe it should be returned by .write_comment
+        comment_found = self.sample_page.get_comment(self.driver.current_url)
+        self.driver.save_screenshot(f'{DIR}/{request.node.name}.png')
+
         assert comment_found is not None
-        assert comment_found.find_element_by_class_name(COMMENT_BODY_ID).text == comment
+        assert comment == comment_found.find_element_by_class_name(COMMENT_BODY_ID).text
 
     def test_of_the_gods(self):
         # Enter a comment with a wrong email & Check Error is displayed
