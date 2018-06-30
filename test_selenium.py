@@ -3,6 +3,7 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from text_generator.text_generator import TextGenerator
 from sample_page import SamplePage
 
+
 # HTML ID's
 COMMENT_BODY_ID = 'comment-body'
 ERROR_MESSAGE_ID = 'error-page'
@@ -52,6 +53,12 @@ class TestSelenium:
         return ' '.join(map(str, text.get_dictionary()))
 
     def test_wrong_email_redirects_error_page(self, request):
+        """
+        Writes a comment with wrong email, saves a screenshot.
+        Checks that error messages appears.
+        :param request: pytest fixture with built in methods
+        :return:
+        """
         # when
         comment = self.generate_string(100)
         self.sample_page.write_comment(comment, NAME, WRONG_EMAIL)
@@ -62,6 +69,12 @@ class TestSelenium:
         assert ERROR_MESSAGE in error.text
 
     def test_correct_email_adds_comment(self, request):
+        """
+        Writes a comment with correct email, saves a screenshot.
+        Checks that comment was inserted and it has the correct value.
+        :param request: pytest fixture with built in methods
+        :return:
+        """
         # when
         comment = self.generate_string(100)
         self.sample_page.write_comment(comment, NAME, CORRECT_EMAIL)
@@ -75,6 +88,13 @@ class TestSelenium:
         assert comment == comment_found.find_element_by_class_name(COMMENT_BODY_ID).text
 
     def test_of_the_gods(self, request):
+        """
+        Does everything, writes a comment with wrong email, checks that error messages appears, goes back,
+        writes a new comment with correct email, saves a screenshot, checks that comment was inserted and it
+        has the correct value.
+        :param request: pytest fixture with built in methods
+        :return:
+        """
         # when
         self.sample_page.write_comment(self.generate_string(100), NAME, WRONG_EMAIL)
 
@@ -85,6 +105,7 @@ class TestSelenium:
         # Navigate to Sample Page
         self.driver.back()
 
+        # when
         # Chrome keeps values previously typed
         self.sample_page.clear_fields()
         comment = self.generate_string(100)
