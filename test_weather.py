@@ -60,3 +60,13 @@ class TestWeather:
         res_json = json.loads(json.dumps(xtoj.parse(response.text, attr_prefix='')))
 
         assert res_json['current']['temperature']['unit'] == 'fahrenheit'
+
+    def test_has_weather(self):
+        """
+        Checks that if we ask a different measurement metric we get what we asked for.
+        :return:
+        """
+        response = get(get_url({'q': f'{CITY},{COUNTRY}', 'appid': f'{self.api_key}'}))
+        res_json = json.loads(response.text)
+
+        assert res_json['weather'][0]['description'] is not None
