@@ -1,0 +1,5 @@
+{
+  "api_key": "c433cec4ad408ff9d168cbcf78de13db",
+  "selenium_hub": "192.168.0.2:4444",
+  "browser": "chrome"
+}
