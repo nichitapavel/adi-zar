@@ -33,6 +33,10 @@ class TestSelenium:
 
     @classmethod
     def setup_class(cls):
+        """
+        Remove previous saved screenshots
+        :return:
+        """
         if os.path.exists(DIR):
             shutil.rmtree(DIR)
         os.mkdir(DIR)
@@ -52,6 +56,11 @@ class TestSelenium:
         self.sample_page = None
 
     def navigate_to_page(self, link_text):
+        """
+        Search for the first link that has test described in :param link_text:
+        :param link_text: String
+        :return:
+        """
         self.driver.find_element_by_link_text(link_text).click()
         self.driver.save_screenshot(f'{DIR}/{link_text}.png')
 
