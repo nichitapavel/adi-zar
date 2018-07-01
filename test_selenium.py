@@ -6,6 +6,8 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from text_generator.text_generator import TextGenerator
 
 from sample_page import SamplePage
+from utils import LoadConfig, BROWSER, SELENIUM_HUB
+
 
 # HTML ID's
 COMMENT_BODY_ID = 'comment-body'
@@ -42,8 +44,11 @@ class TestSelenium:
         os.mkdir(DIR)
 
     def setup_method(self):
-        self.driver = WebDriver(command_executor='http://192.168.0.165:4444/wd/hub',
-                                desired_capabilities=DesiredCapabilities.CHROME.copy())
+        config = LoadConfig()
+        selenium_hub = config.get_value(SELENIUM_HUB)
+        browser = config.get_value(BROWSER).upper()
+        self.driver = WebDriver(command_executor=f'http://{selenium_hub}/wd/hub',
+                                desired_capabilities=getattr(DesiredCapabilities, browser).copy())
         self.driver.get('http://store.demoqa.com')
         self.navigate_to_page(SAMPLE_PAGE)
         self.sample_page = SamplePage(self.driver)

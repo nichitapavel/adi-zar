@@ -5,10 +5,10 @@ from requests.utils import urlunparse
 from requests.api import get
 from urllib.parse import urlencode, urlparse
 from http import HTTPStatus
+from utils import LoadConfig, API_KEY
 
 
 UNITS = 'metric'
-API_KEY = 'c433ce2c47008f591668cbcf78df75db'
 CITY = 'Zaragoza'
 COUNTRY = 'ES'
 CITY_NOT_FOUND_MESSAGE = 'city not found'
@@ -28,12 +28,15 @@ def get_url(args_dict):
 
 class TestWeather:
 
+    def setup_method(self):
+        self.api_key = LoadConfig().get_value(API_KEY)
+
     def test_get_correct_city(self):
         """
         Checks weather for a city and checks that response is describing the city asked and not another one.
         :return:
         """
-        response = get(get_url({'q': f'{CITY},{COUNTRY}', 'appid': f'{API_KEY}'}))
+        response = get(get_url({'q': f'{CITY},{COUNTRY}', 'appid': f'{self.api_key}'}))
         res_json = json.loads(response.text)
         assert CITY == res_json['name']
 
@@ -44,7 +47,7 @@ class TestWeather:
         :return:
         """
         unknown = 'UNKNOWN'
-        response = get(get_url({'q': f'{unknown},{COUNTRY}', 'appid': f'{API_KEY}'}))
+        response = get(get_url({'q': f'{unknown},{COUNTRY}', 'appid': f'{self.api_key}'}))
         res_json = json.loads(response.text)
 
         assert HTTPStatus.NOT_FOUND == response.status_code
@@ -55,7 +58,7 @@ class TestWeather:
         Checks that if we ask a different measurement metric we get what we asked for.
         :return:
         """
-        response = get(get_url({'q': f'{CITY},{COUNTRY}', 'appid': f'{API_KEY}',
+        response = get(get_url({'q': f'{CITY},{COUNTRY}', 'appid': f'{self.api_key}',
                                 'mode': 'xml', 'units': 'imperial'}))
         res_json = json.loads(json.dumps(xtoj.parse(response.text, attr_prefix='')))
 
